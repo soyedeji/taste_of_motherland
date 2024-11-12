@@ -1,0 +1,34 @@
+<h1>Menu Listings</h1>
+<%= link_to "Add New ", new_admin_menu_path, class: "btn btn-primary mb-3" %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Price</th>
+      <th>Category</th>
+      <th>Availability</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @menus.each do |menu| %>
+      <tr>
+        <td><%= menu.name %></td>
+        <td><%= menu.description %></td>
+        <td><%= number_to_currency(menu.price) %></td>
+        <td><%= menu.category.name if menu.category.present? %></td>
+        <td><%= menu.availability_status ? "Available" : "Unavailable" %></td>
+        <td>
+          <%= link_to "Edit", edit_admin_menu_path(menu), class: "btn btn-sm btn-secondary" %>
+          <%= link_to "Delete", admin_menu_path(menu), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-sm btn-danger" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <%= link_to "Back to Admin Dashboard", admin_root_path, class: "btn btn-secondary" %>
+</div>

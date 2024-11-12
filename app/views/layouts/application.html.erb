@@ -20,16 +20,29 @@
 
     <!-- Application stylesheet -->
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
   </head>
 
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container">
-        <!-- Login Button -->
+        <!-- Navbar Brand -->
+        <a class="navbar-brand" href="/">Taste Of Motherland</a>
+
+        <!-- Login/Logout Button -->
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <%= link_to "Login", new_admin_session_path, class: "nav-link" %>
-          </li>
+          <% if admin_signed_in? %>
+            <li class="nav-item">
+              <%= link_to "Logged in as Admin", "#", class: "nav-link disabled" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Logout", destroy_admin_session_path, method: :delete, class: "nav-link" %>
+            </li>
+          <% else %>
+            <li class="nav-item">
+              <%= link_to "Login as Admin", new_admin_session_path, class: "nav-link" %>
+            </li>
+          <% end %>
         </ul>
       </div>
     </nav>
@@ -39,4 +52,10 @@
     <!-- Bootstrap JavaScript -->
     <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" %>
   </body>
+
+  <%= javascript_importmap_tags %>
+  <script type="module">
+    import Rails from "@rails/ujs"
+    Rails.start()
+  </script>
 </html>
