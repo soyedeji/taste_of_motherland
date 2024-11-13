@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "cart/add_to_cart"
+  get "cart/show"
   get "menus/show"
 
   root "home#index"
@@ -14,6 +16,10 @@ Rails.application.routes.draw do
 
   # Define routes for menus to show individual product details
   resources :menus, only: [:show]
+
+  resources :menus, only: [:index, :show]
+  post 'add_to_cart/:id', to: 'cart#add_to_cart', as: 'add_to_cart'
+  get 'cart', to: 'cart#show', as: 'cart'
 
 
 end
