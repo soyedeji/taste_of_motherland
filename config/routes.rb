@@ -13,7 +13,11 @@ Rails.application.routes.draw do
   end
 
   # Define routes for menus to show individual product details
-  resources :menus, only: [:show]
+  resources :menus, only: [ :show ]
 
-
+  resource :cart, only: [ :show ], controller: "cart" do
+    post :add_to_cart, path: "add/:menu_id"
+    patch :update_quantity
+    delete :remove_item
+  end
 end
