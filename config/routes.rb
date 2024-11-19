@@ -15,11 +15,15 @@ Rails.application.routes.draw do
   end
 
   # Define routes for menus to show individual product details
-  resources :menus, only: [:show]
+  resources :menus, only: [ :show ]
 
-  resources :menus, only: [:index, :show]
-  post 'add_to_cart/:id', to: 'cart#add_to_cart', as: 'add_to_cart'
-  get 'cart', to: 'cart#show', as: 'cart'
+  resources :menus, only: [ :index, :show ]
+  post "add_to_cart/:id", to: "cart#add_to_cart", as: "add_to_cart"
+  get "cart", to: "cart#show", as: "cart"
 
-
+  resource :cart, only: [ :show ], controller: "carts" do
+    post :add_to_cart, path: "add_to_cart/:id"
+    patch :update_quantity
+    delete :remove_item
+  end
 end

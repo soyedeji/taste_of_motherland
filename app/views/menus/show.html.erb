@@ -14,7 +14,7 @@
       <p><strong>Price:</strong> <%= number_to_currency(@menu.price) %></p>
       <p><strong>Availability:</strong> <%= @menu.availability_status ? "Available" : "Unavailable" %></p>
 
-      <%= form_with url: add_to_cart_path(@menu), method: :post, local: true do |form| %>
+      <%= form_with url: add_to_cart_cart_path(@menu), method: :post, local: true do |form| %>
         <div class="form-group">
           <%= form.label :quantity, "Quantity" %>
           <%= form.number_field :quantity, value: 1, min: 1, class: "form-control" %>

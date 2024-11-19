@@ -9,15 +9,25 @@
           <th>Quantity</th>
           <th>Price</th>
           <th>Total</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <% @cart_items.each do |item| %>
           <tr>
             <td><%= item[:menu].name %></td>
-            <td><%= item[:quantity] %></td>
+            <td>
+              <%= form_with url: update_quantity_cart_path, method: :patch, local: true do |form| %>
+                <%= form.hidden_field :menu_id, value: item[:menu].id %>
+                <%= form.number_field :quantity, value: item[:quantity], min: 1, class: "form-control", style: "width: 70px; display: inline;" %>
+                <%= form.submit "Update", class: "btn btn-primary btn-sm ms-2" %>
+              <% end %>
+            </td>
             <td><%= number_to_currency(item[:menu].price) %></td>
             <td><%= number_to_currency(item[:menu].price * item[:quantity]) %></td>
+            <td>
+              <%= link_to "Remove", remove_item_cart_path(menu_id: item[:menu].id), method: :delete, class: "btn btn-danger btn-sm" %>
+            </td>
           </tr>
         <% end %>
       </tbody>
@@ -25,6 +35,7 @@
         <tr>
           <td colspan="3" class="text-right"><strong>Total:</strong></td>
           <td><%= number_to_currency(@cart_items.sum { |item| item[:menu].price * item[:quantity] }) %></td>
+          <td></td>
         </tr>
       </tfoot>
     </table>
@@ -32,6 +43,5 @@
     <p>Your cart is empty.</p>
   <% end %>
 
-<%= link_to "Continue Shopping", root_path, class: "btn btn-secondary mt-3" %>
-
+  <%= link_to "Continue Shopping", root_path, class: "btn btn-secondary mt-3" %>
 </div>

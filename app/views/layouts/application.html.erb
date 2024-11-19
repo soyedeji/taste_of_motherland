@@ -45,6 +45,14 @@
           <% end %>
         </ul>
       </div>
+      <!-- Cart Icon -->
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item">
+        <%= link_to cart_path, class: "nav-link" do %>
+          <i class="fas fa-shopping-cart"></i> Cart
+        <% end %>
+      </li>
+    </ul>
     </nav>
 
     <%= yield %>
