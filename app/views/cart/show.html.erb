@@ -14,10 +14,7 @@
       </thead>
       <tbody>
         <% @cart_items.each do |item| %>
-<<<<<<< HEAD
-=======
           <% next unless item[:menu] %> <!-- Skip invalid or deleted items -->
->>>>>>> fixed-cart-issues
           <tr>
             <td><%= item[:menu].name %></td>
             <td>
@@ -30,15 +27,11 @@
             <td><%= number_to_currency(item[:menu].price) %></td>
             <td><%= number_to_currency(item[:menu].price * item[:quantity]) %></td>
             <td>
-<<<<<<< HEAD
-              <%= link_to "Remove", remove_item_cart_path(menu_id: item[:menu].id), method: :delete, class: "btn btn-danger btn-sm" %>
-=======
+              <!-- Debug the ID -->
               <%= link_to "Remove", remove_item_cart_path(menu_id: item[:menu].id),
-             method: :delete,
-             class: "btn btn-danger btn-sm",
-             data: { turbo: false } %>
-
->>>>>>> fixed-cart-issues
+              method: :delete,
+              class: "btn btn-danger btn-sm",
+              data: { turbo: false } %>
             </td>
           </tr>
         <% end %>
@@ -46,11 +39,7 @@
       <tfoot>
         <tr>
           <td colspan="3" class="text-right"><strong>Total:</strong></td>
-<<<<<<< HEAD
-          <td><%= number_to_currency(@cart_items.sum { |item| item[:menu].price * item[:quantity] }) %></td>
-=======
           <td><%= number_to_currency(@cart_items.sum { |item| item[:menu]&.price.to_f * item[:quantity] }) %></td>
->>>>>>> fixed-cart-issues
           <td></td>
         </tr>
       </tfoot>

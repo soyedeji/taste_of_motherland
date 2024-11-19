@@ -30,13 +30,12 @@ class CartController < ApplicationController
   end
 
   def remove_item
-    menu_id = params[:menu_id].to_i
-    Rails.logger.info "Before removal: #{session[:cart]}" # Log for debugging
-
-    session[:cart]&.delete(menu_id)
-
-    Rails.logger.info "After removal: #{session[:cart]}" # Log for debugging
-    redirect_to cart_path, notice: "Item removed from cart."
+    menu_id = params[:menu_id].to_s # Ensure matching key type
+    Rails.logger.debug "Menu ID to remove: #{menu_id}"
+    Rails.logger.debug "Cart before removal: #{session[:cart]}"
+    session[:cart].delete(menu_id)
+    Rails.logger.debug "Cart after removal: #{session[:cart]}"
+    redirect_to cart_path, notice: "Item removed successfully."
   end
 
   def show

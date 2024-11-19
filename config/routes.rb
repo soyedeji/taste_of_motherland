@@ -16,19 +16,9 @@ Rails.application.routes.draw do
 
   # Define routes for menus to show individual product details
   resources :menus, only: [ :show ]
-<<<<<<< HEAD
-
-  resources :menus, only: [ :index, :show ]
-  post "add_to_cart/:id", to: "cart#add_to_cart", as: "add_to_cart"
-  get "cart", to: "cart#show", as: "cart"
-
-  resource :cart, only: [ :show ], controller: "carts" do
-    post :add_to_cart, path: "add_to_cart/:id"
-=======
 
   resource :cart, only: [ :show ], controller: "cart" do
     post :add_to_cart, path: "add/:menu_id"
->>>>>>> fixed-cart-issues
     patch :update_quantity
     delete :remove_item
   end
