@@ -1,0 +1,49 @@
+<div class="container mt-5">
+  <h1>Checkout</h1>
+
+  <%= form_with url: checkout_path, method: :post, local: true do |form| %>
+    <div class="mb-3">
+      <%= form.label :name, "Name" %>
+      <%= form.text_field :name, name: "customer[name]", class: "form-control", required: true %>
+    </div>
+    <div class="mb-3">
+      <%= form.label :address, "Address" %>
+      <%= form.text_field :address, name: "customer[address]", class: "form-control", required: true %>
+    </div>
+    <div class="mb-3">
+      <%= form.label :province, "Province" %>
+      <%= form.select :province, ["Ontario", "Manitoba", "Quebec"], {}, name: "customer[province]", class: "form-control", required: true %>
+    </div>
+
+    <h3>Order</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% session[:cart].each do |menu_id, quantity| %>
+          <% menu = Menu.find(menu_id) %>
+          <tr>
+            <td><%= menu.name %></td>
+            <td><%= quantity %></td>
+            <td><%= number_to_currency(menu.price) %></td>
+            <td><%= number_to_currency(menu.price * quantity) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3"><strong>Total:</strong></td>
+          <td><%= number_to_currency(session[:cart].sum { |menu_id, quantity| Menu.find(menu_id).price * quantity }) %></td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <%= form.submit "Proceed to Order Summary", class: "btn btn-primary" %>
+  <% end %>
+</div>

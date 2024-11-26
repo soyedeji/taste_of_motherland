@@ -14,7 +14,6 @@
       </thead>
       <tbody>
         <% @cart_items.each do |item| %>
-          <% next unless item[:menu] %> <!-- Skip invalid or deleted items -->
           <tr>
             <td><%= item[:menu].name %></td>
             <td>
@@ -27,11 +26,7 @@
             <td><%= number_to_currency(item[:menu].price) %></td>
             <td><%= number_to_currency(item[:menu].price * item[:quantity]) %></td>
             <td>
-              <!-- Debug the ID -->
-              <%= link_to "Remove", remove_item_cart_path(menu_id: item[:menu].id),
-              method: :delete,
-              class: "btn btn-danger btn-sm",
-              data: { turbo: false } %>
+              <%= link_to "Remove", remove_item_cart_path(menu_id: item[:menu].id), method: :delete, class: "btn btn-danger btn-sm" %>
             </td>
           </tr>
         <% end %>
@@ -39,11 +34,14 @@
       <tfoot>
         <tr>
           <td colspan="3" class="text-right"><strong>Total:</strong></td>
-          <td><%= number_to_currency(@cart_items.sum { |item| item[:menu]&.price.to_f * item[:quantity] }) %></td>
+          <td><%= number_to_currency(@cart_items.sum { |item| item[:menu].price * item[:quantity] }) %></td>
           <td></td>
         </tr>
       </tfoot>
     </table>
+
+    <!-- Add Checkout Button -->
+    <%= link_to "Proceed to Checkout", new_checkout_path, class: "btn btn-success mt-3" %>
   <% else %>
     <p>Your cart is empty.</p>
   <% end %>

@@ -1,9 +1,9 @@
 class ApplicationController < ActionController::Base
-  before_action :authenticate_admin!, if: :admin_controller?
+  before_action :initialize_cart
 
   private
 
-  def admin_controller?
-    self.class < Admin::BaseController
+  def initialize_cart
+    session[:cart] ||= {}
   end
 end

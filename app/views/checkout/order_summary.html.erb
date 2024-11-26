@@ -1,0 +1,50 @@
+<!-- app/views/checkout/order_summary.html.erb -->
+<div class="container mt-5">
+  <h1>Order Summary</h1>
+  <p><strong>Name:</strong> <%= @customer.name %></p>
+  <p><strong>Address:</strong> <%= @customer.address %></p>
+  <p><strong>Province:</strong> <%= @customer.province %></p>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @order_details.each do |detail| %>
+        <tr>
+          <td><%= detail.menu.name %></td>
+          <td><%= detail.quantity %></td>
+          <td><%= number_to_currency(detail.price) %></td>
+          <td><%= number_to_currency(detail.price * detail.quantity) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3"><strong>Subtotal:</strong></td>
+        <td><%= number_to_currency(@order.total_price) %></td>
+      </tr>
+      <tr>
+        <td colspan="3"><strong>GST:</strong></td>
+        <td><%= number_to_currency(@gst) %></td>
+      </tr>
+      <tr>
+        <td colspan="3"><strong>PST:</strong></td>
+        <td><%= number_to_currency(@pst) %></td>
+      </tr>
+      <tr>
+        <td colspan="3"><strong>HST:</strong></td>
+        <td><%= number_to_currency(@hst) %></td>
+      </tr>
+      <tr>
+        <td colspan="3"><strong>Total (with Taxes):</strong></td>
+        <td><%= number_to_currency(@total_with_taxes) %></td>
+      </tr>
+    </tfoot>
+  </table>
+</div>
