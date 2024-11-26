@@ -28,7 +28,26 @@
         <!-- Navbar Brand -->
         <a class="navbar-brand" href="/">Taste Of Motherland</a>
 
-        <!-- Login/Logout Button -->
+        <!-- Login/Logout and Sign-Up for Customers -->
+        <ul class="navbar-nav ms-auto">
+          <% if customer_signed_in? %>
+            <li class="nav-item">
+              <%= link_to "Profile", edit_customer_registration_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Logout", destroy_customer_session_path, method: :delete, class: "nav-link" %>
+            </li>
+          <% else %>
+            <li class="nav-item">
+              <%= link_to "Sign Up", new_customer_registration_path, class: "nav-link" %>
+            </li>
+            <li class="nav-item">
+              <%= link_to "Login", new_customer_session_path, class: "nav-link" %>
+            </li>
+          <% end %>
+        </ul>
+
+        <!-- Login/Logout for Admins -->
         <ul class="navbar-nav ms-auto">
           <% if admin_signed_in? %>
             <li class="nav-item">
@@ -43,15 +62,16 @@
             </li>
           <% end %>
         </ul>
+
+        <!-- Cart Icon -->
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <%= link_to cart_path, class: "nav-link" do %>
+              <i class="fas fa-shopping-cart"></i> Cart
+            <% end %>
+          </li>
+        </ul>
       </div>
-      <!-- Cart Icon -->
-    <ul class="navbar-nav ms-auto">
-      <li class="nav-item">
-        <%= link_to cart_path, class: "nav-link" do %>
-          <i class="fas fa-shopping-cart"></i> Cart
-        <% end %>
-      </li>
-    </ul>
     </nav>
 
     <%= yield %>
@@ -59,4 +79,4 @@
     <!-- Bootstrap JavaScript -->
     <%= javascript_include_tag "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" %>
   </body>
-  </html>
+</html>

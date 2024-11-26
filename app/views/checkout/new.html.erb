@@ -2,18 +2,35 @@
   <h1>Checkout</h1>
 
   <%= form_with url: checkout_path, method: :post, local: true do |form| %>
-    <div class="mb-3">
-      <%= form.label :name, "Name" %>
-      <%= form.text_field :name, name: "customer[name]", class: "form-control", required: true %>
-    </div>
-    <div class="mb-3">
-      <%= form.label :address, "Address" %>
-      <%= form.text_field :address, name: "customer[address]", class: "form-control", required: true %>
-    </div>
-    <div class="mb-3">
-      <%= form.label :province, "Province" %>
-      <%= form.select :province, ["Ontario", "Manitoba", "Quebec"], {}, name: "customer[province]", class: "form-control", required: true %>
-    </div>
+    <% if customer_signed_in? %>
+      <!-- Prepopulate for logged-in customers -->
+      <div class="mb-3">
+        <%= form.label :name, "Name" %>
+        <%= form.text_field :name, name: "customer[name]", class: "form-control", value: current_customer.name, readonly: true %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :address, "Address" %>
+        <%= form.text_field :address, name: "customer[address]", class: "form-control", value: current_customer.address, readonly: true %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :province, "Province" %>
+        <%= form.text_field :province, name: "customer[province]", class: "form-control", value: current_customer.province, readonly: true %>
+      </div>
+    <% else %>
+      <!-- Editable fields for non-logged-in customers -->
+      <div class="mb-3">
+        <%= form.label :name, "Name" %>
+        <%= form.text_field :name, name: "customer[name]", class: "form-control", required: true %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :address, "Address" %>
+        <%= form.text_field :address, name: "customer[address]", class: "form-control", required: true %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :province, "Province" %>
+        <%= form.select :province, ["Ontario", "Manitoba", "Quebec"], {}, name: "customer[province]", class: "form-control", required: true %>
+      </div>
+    <% end %>
 
     <h3>Order</h3>
     <table class="table">
