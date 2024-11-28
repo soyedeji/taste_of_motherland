@@ -3,11 +3,21 @@ class HomeController < ApplicationController
     # Load all categories for the filter dropdown
     @categories = Category.all
 
-    # If a category is selected, filter products by that category with pagination
-    @menus = if params[:category_id]
-               Menu.where(category_id: params[:category_id]).page(params[:page]).per(10) # 10 items per page
-    else
-               Menu.page(params[:page]).per(10) # 10 items per page
+    # Base query for menus
+    @menus = Menu.all
+
+    # If a category is selected, filter products by that category
+    if params[:category_id].present?
+      @menus = @menus.where(category_id: params[:category_id])
     end
+
+    # If a search keyword is provided, filter by product name or description
+    if params[:search].present?
+      keyword = params[:search].downcase
+      @menus = @menus.where("LOWER(name) LIKE ? OR LOWER(description) LIKE ?", "%#{keyword}%", "%#{keyword}%")
+    end
+
+    # Paginate the results
+    @menus = @menus.page(params[:page]).per(10) # 10 items per page
   end
 end

@@ -1,54 +1,20 @@
 <div class="container mt-5">
   <h1 class="text-center mb-4">Our Menu</h1>
 
-  <!-- Category Filter Dropdown -->
-  <div class="row mb-4">
-    <div class="col-md-4 offset-md-4">
-      <%= form_with url: root_path, method: :get, local: true do |form| %>
-        <div class="input-group">
-          <%= form.label :category_id, "Filter by Category", class: "input-group-text" %>
-          <%= form.collection_select :category_id, @categories, :id, :name, { prompt: "All Categories" }, class: "form-select" %>
-          <%= form.submit "Filter", class: "btn btn-primary" %>
-        </div>
-      <% end %>
-    </div>
-  </div>
+  <!-- Search and Category Filter -->
+  <%= render 'shared/search_and_filter', categories: @categories %>
 
   <!-- Display Products -->
-  <div class="container mt-5">
-    <h1 class="text-center mb-4">Our Menu</h1>
-
-    <!-- Product Display -->
-    <div class="row">
-      <% if @menus.any? %>
-        <% @menus.each do |menu| %>
-          <div class="col-md-4 mb-4">
-            <div class="card">
-              <% if menu.image.attached? %>
-                <%= link_to image_tag(menu.image, class: "card-img-top", alt: menu.name), menu_path(menu) %>
-              <% else %>
-                <%= link_to image_tag("https://via.placeholder.com/150", class: "card-img-top", alt: "Placeholder"), menu_path(menu) %>
-              <% end %>
-              <div class="card-body">
-                <h5 class="card-title"><%= link_to menu.name, menu_path(menu) %></h5>
-                <p class="card-text"><%= truncate(menu.description, length: 100) %></p>
-                <p class="card-text"><strong>Price:</strong> <%= number_to_currency(menu.price) %></p>
-                <p class="card-text">
-                  <strong>Availability:</strong>
-                  <%= menu.availability_status ? "Available" : "Unavailable" %>
-                </p>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      <% else %>
-        <p class="text-center">No products available.</p>
+  <div class="row">
+    <% if @menus.any? %>
+      <% @menus.each do |menu| %>
+        <%= render 'shared/product_card', menu: menu %>
       <% end %>
-    </div>
+    <% else %>
+      <p class="text-center text-danger">No products match your search criteria.</p>
+    <% end %>
   </div>
 
   <!-- Pagination Controls -->
-  <div class="d-flex justify-content-center mt-4">
-    <%= paginate @menus %>
-  </div>
+  <%= render 'shared/pagination_controls', menus: @menus %>
 </div>
