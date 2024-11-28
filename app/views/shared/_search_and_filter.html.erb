@@ -1,0 +1,17 @@
+<div class="row mb-4">
+  <div class="col-md-6 offset-md-3">
+    <%= form_with url: root_path, method: :get, local: true do |form| %>
+      <div class="input-group">
+        <!-- Category Dropdown -->
+        <%= form.label :category_id, "Category", class: "input-group-text" %>
+        <%= form.collection_select :category_id, categories, :id, :name, { prompt: "All Categories", selected: params[:category_id] }, class: "form-select" %>
+
+        <!-- Search Input -->
+        <%= form.text_field :search, placeholder: "Search products...", value: params[:search], class: "form-control" %>
+
+        <!-- Submit Button -->
+        <%= form.submit "Search", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

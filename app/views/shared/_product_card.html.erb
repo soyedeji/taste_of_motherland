@@ -1,0 +1,18 @@
+<div class="col-md-4 mb-4">
+  <div class="card">
+    <% if menu.image.attached? %>
+      <%= link_to image_tag(menu.image, class: "card-img-top", alt: menu.name), menu_path(menu) %>
+    <% else %>
+      <%= link_to image_tag("https://via.placeholder.com/150", class: "card-img-top", alt: "Placeholder"), menu_path(menu) %>
+    <% end %>
+    <div class="card-body">
+      <h5 class="card-title"><%= link_to menu.name, menu_path(menu) %></h5>
+      <p class="card-text"><%= truncate(menu.description, length: 100) %></p>
+      <p class="card-text"><strong>Price:</strong> <%= number_to_currency(menu.price) %></p>
+      <p class="card-text">
+        <strong>Availability:</strong>
+        <%= menu.availability_status ? "Available" : "Unavailable" %>
+      </p>
+    </div>
+  </div>
+</div>
