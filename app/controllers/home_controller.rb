@@ -1,13 +1,19 @@
 class HomeController < ApplicationController
   def index
-    # Load all categories for the filter dropdown
     @categories = Category.all
+    @menus = Menu.all
 
-    # If a category is selected, filter products by that category with pagination
-    @menus = if params[:category_id]
-               Menu.where(category_id: params[:category_id]).page(params[:page]).per(10) # 10 items per page
-    else
-               Menu.page(params[:page]).per(10) # 10 items per page
+    # Filter by Category if a category_id is provided
+    if params[:category_id].present?
+      @menus = @menus.where(category_id: params[:category_id])
     end
+
+    # Search by Keyword in Name or Description
+    if params[:search].present?
+      @menus = @menus.where("name LIKE :query OR description LIKE :query", query: "%#{params[:search]}%")
+    end
+
+    # Add Pagination
+    @menus = @menus.page(params[:page]).per(10)
   end
 end
