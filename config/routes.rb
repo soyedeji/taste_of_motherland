@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   devise_for :customers
+
   # Cart routes
   resource :cart, only: [ :show ], controller: "cart" do
     post :add_to_cart, path: "add/:menu_id"
