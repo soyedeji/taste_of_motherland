@@ -1,24 +1,14 @@
 class CheckoutController < ApplicationController
-  before_action :authenticate_customer!, only: [ :new, :create ]
-
   def new
-    # Use current customer for logged-in users, or create a new customer instance for guests
-    @customer = customer_signed_in? ? current_customer : Customer.new
+    @customer = Customer.new
   end
 
   def create
-    # Use current customer if logged in, otherwise find or initialize a new customer
-    @customer = if customer_signed_in?
-                  current_customer
-    else
-                  Customer.find_or_initialize_by(name: customer_params[:name])
-    end
-
-    # Update customer details only if not logged in
-    @customer.update(customer_params) unless customer_signed_in?
+    @customer = Customer.find_or_initialize_by(name: customer_params[:name])
+    @customer.update(customer_params) # Use strong parameters
 
     # Create an order for the customer
-    order = @customer.orders.create(total_amount: calculate_total_price)
+    order = @customer.orders.create(total_amount: calculate_total_price) # Use total_amount as per schema
 
     # Add order details for each item in the cart
     session[:cart].each do |menu_id, quantity|
@@ -29,7 +19,6 @@ class CheckoutController < ApplicationController
         price: menu.price
       )
     end
-
     # Clear the cart after checkout
     session[:cart] = nil
 
