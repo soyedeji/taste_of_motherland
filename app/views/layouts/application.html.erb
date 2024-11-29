@@ -24,57 +24,70 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
-        <!-- Navbar Brand -->
-        <a class="navbar-brand" href="/">Taste Of Motherland</a>
+        <!-- Brand -->
+        <a class="navbar-brand" href="/">
+          Taste Of Motherland
+        </a>
 
-        <!-- Login/Logout and Sign-Up for Customers -->
-        <ul class="navbar-nav ms-auto">
-          <% if customer_signed_in? %>
-            <li class="nav-item">
-              <%= link_to "Profile", edit_customer_registration_path, class: "nav-link" %>
-            </li>
-            <li class="nav-item">
-              <%= link_to "Logout", destroy_customer_session_path, method: :delete, class: "nav-link" %>
-            </li>
-          <% else %>
-            <li class="nav-item">
-              <%= link_to "Sign Up", new_customer_registration_path, class: "nav-link" %>
-            </li>
-            <li class="nav-item">
-              <%= link_to "Login", new_customer_session_path, class: "nav-link" %>
-            </li>
-          <% end %>
-        </ul>
+        <!-- Toggler for Mobile View -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-        <!-- Login/Logout for Admins -->
-        <ul class="navbar-nav ms-auto">
-          <% if admin_signed_in? %>
-            <li class="nav-item">
-              <%= link_to "Logged in as Admin", "#", class: "nav-link disabled" %>
-            </li>
-            <li class="nav-item">
-              <%= link_to "Logout", destroy_admin_session_path, method: :delete, class: "nav-link" %>
-            </li>
-          <% else %>
-            <li class="nav-item">
-              <%= link_to "Login as Admin", new_admin_session_path, class: "nav-link" %>
-            </li>
-          <% end %>
-        </ul>
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
 
-        <!-- Cart Icon -->
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <%= link_to cart_path, class: "nav-link" do %>
-              <i class="fas fa-shopping-cart"></i> Cart
+
+            <!-- Customer Authentication -->
+            <% if customer_signed_in? %>
+              <li class="nav-item dropdown me-3">
+                <a class="nav-link dropdown-toggle text-white" href="#" id="customerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Customer
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="customerDropdown">
+                  <li><%= link_to "Profile", edit_customer_registration_path, class: "dropdown-item" %></li>
+                  <li><%= link_to "Logout", destroy_customer_session_path, method: :delete, class: "dropdown-item" %></li>
+                </ul>
+              </li>
+            <% else %>
+              <li class="nav-item me-3">
+                <%= link_to "Sign Up", new_customer_registration_path, class: "nav-link text-white" %>
+              </li>
+              <li class="nav-item me-3">
+                <%= link_to "Login", new_customer_session_path, class: "nav-link text-white" %>
+              </li>
             <% end %>
-          </li>
-        </ul>
+
+            <!-- Admin Authentication -->
+            <% if admin_signed_in? %>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle text-white" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Admin
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
+                  <li class="dropdown-item disabled">Logged in as Admin</li>
+                  <li><%= link_to "Logout", destroy_admin_session_path, method: :delete, class: "dropdown-item" %></li>
+                </ul>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <%= link_to "Login as Admin", new_admin_session_path, class: "nav-link text-white" %>
+              </li>
+            <% end %>
+
+            <!-- Cart -->
+            <li class="nav-item me-3">
+              <%= link_to cart_path, class: "nav-link text-white" do %>
+                <i class="fas fa-shopping-cart"></i> Cart
+              <% end %>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
-
     <%= yield %>
 
     <!-- Bootstrap JavaScript -->
