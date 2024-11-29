@@ -13,3 +13,12 @@
  *= require_tree .
  *= require_self
  */
+/* Style for product images */
+.product-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover; /* Ensures the image scales and fills the box without distortion */
+  border-radius: 5px; /* Optional: Adds slight rounding to the corners */
+  display: block;
+  margin: 0 auto; /* Centers the image horizontally */
+}

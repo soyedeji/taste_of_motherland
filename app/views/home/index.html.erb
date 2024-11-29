@@ -31,7 +31,7 @@
         <div class="col-md-4 mb-4">
           <div class="card">
             <% if menu.image.attached? %>
-              <%= link_to image_tag(menu.image, class: "card-img-top", alt: menu.name), menu_path(menu) %>
+              <%= link_to image_tag(menu.image, class: "card-img-top product-image", alt: menu.name), menu_path(menu) %>
             <% else %>
               <%= link_to image_tag("https://via.placeholder.com/150", class: "card-img-top", alt: "Placeholder"), menu_path(menu) %>
             <% end %>
