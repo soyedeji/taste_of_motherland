@@ -5,25 +5,29 @@ class CheckoutController < ApplicationController
 
   def create
     @customer = Customer.find_or_initialize_by(name: customer_params[:name])
-    @customer.update(customer_params) # Use strong parameters
+    if @customer.update(customer_params) # Use strong parameters
+      # Create an order for the customer
+      order = @customer.orders.create(total_amount: calculate_total_price) # Use total_amount as per schema
 
-    # Create an order for the customer
-    order = @customer.orders.create(total_amount: calculate_total_price) # Use total_amount as per schema
+      # Add order details for each item in the cart
+      session[:cart].each do |menu_id, quantity|
+        menu = Menu.find(menu_id)
+        order.order_details.create!(
+          menu: menu,
+          quantity: quantity,
+          price: menu.price
+        )
+      end
 
-    # Add order details for each item in the cart
-    session[:cart].each do |menu_id, quantity|
-      menu = Menu.find(menu_id)
-      order.order_details.create!(
-        menu: menu,
-        quantity: quantity,
-        price: menu.price
-      )
+      # Clear the cart after checkout
+      session[:cart] = nil
+
+      # Redirect to the order summary page with success message
+      redirect_to order_path(order), notice: "Order placed successfully!"
+    else
+      flash.now[:alert] = "There was an issue with your order. Please ensure all details are correct."
+      render :new
     end
-    # Clear the cart after checkout
-    session[:cart] = nil
-
-    # Redirect to the order summary page
-    redirect_to order_path(order), notice: "Order placed successfully!"
   end
 
   def show
