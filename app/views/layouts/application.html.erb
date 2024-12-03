@@ -27,9 +27,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
         <!-- Brand -->
-        <a class="navbar-brand" href="/">
-          Taste Of Motherland
-        </a>
+        <a class="navbar-brand" href="/">Taste Of Motherland</a>
 
         <!-- Toggler for Mobile View -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,28 +37,6 @@
         <!-- Navbar Links -->
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav ms-auto">
-
-
-            <!-- Customer Authentication -->
-            <% if customer_signed_in? %>
-              <li class="nav-item dropdown me-3">
-                <a class="nav-link dropdown-toggle text-white" href="#" id="customerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Customer
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="customerDropdown">
-                  <li><%= link_to "Profile", edit_customer_registration_path, class: "dropdown-item" %></li>
-                  <li><%= link_to "Logout", destroy_customer_session_path, method: :delete, class: "dropdown-item" %></li>
-                </ul>
-              </li>
-            <% else %>
-              <li class="nav-item me-3">
-                <%= link_to "Sign Up", new_customer_registration_path, class: "nav-link text-white" %>
-              </li>
-              <li class="nav-item me-3">
-                <%= link_to "Login", new_customer_session_path, class: "nav-link text-white" %>
-              </li>
-            <% end %>
-
             <!-- Admin Authentication -->
             <% if admin_signed_in? %>
               <li class="nav-item dropdown">
@@ -72,7 +48,25 @@
                   <li><%= link_to "Logout", destroy_admin_session_path, method: :delete, class: "dropdown-item" %></li>
                 </ul>
               </li>
+            <% elsif customer_signed_in? %>
+              <!-- Customer Authentication -->
+              <li class="nav-item dropdown me-3">
+                <a class="nav-link dropdown-toggle text-white" href="#" id="customerDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Customer
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="customerDropdown">
+                  <li><%= link_to "Profile", edit_customer_registration_path, class: "dropdown-item" %></li>
+                  <li><%= link_to "Logout", destroy_customer_session_path, method: :delete, class: "dropdown-item" %></li>
+                </ul>
+              </li>
             <% else %>
+              <!-- Show Login Links -->
+              <li class="nav-item me-3">
+                <%= link_to "Sign Up", new_customer_registration_path, class: "nav-link text-white" %>
+              </li>
+              <li class="nav-item me-3">
+                <%= link_to "Login", new_customer_session_path, class: "nav-link text-white" %>
+              </li>
               <li class="nav-item">
                 <%= link_to "Login as Admin", new_admin_session_path, class: "nav-link text-white" %>
               </li>
@@ -88,6 +82,7 @@
         </div>
       </div>
     </nav>
+
     <%= yield %>
 
     <!-- Bootstrap JavaScript -->
