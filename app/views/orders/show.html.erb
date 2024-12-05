@@ -1,0 +1,37 @@
+<!-- app/views/orders/show.html.erb -->
+<div class="container mt-5">
+  <h1>Order Details</h1>
+
+  <h2>Order ID: <%= @order.id %></h2>
+  <p>Date: <%= @order.created_at.strftime("%Y-%m-%d") %></p>
+  <p>Status: <%= @order.status %></p>
+
+  <h3>Order Items</h3>
+  <table class="table table-striped mt-4">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @order_details.each do |detail| %>
+        <tr>
+          <td><%= detail.menu.name %></td>
+          <td><%= detail.quantity %></td>
+          <td><%= number_to_currency(detail.price) %></td>
+          <td><%= number_to_currency(detail.price * detail.quantity) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <h3>Order Summary</h3>
+  <p>Subtotal: <%= number_to_currency(@subtotal) %></p>
+  <p>GST: <%= number_to_currency(@gst) %></p>
+  <p>PST: <%= number_to_currency(@pst) %></p>
+  <p>HST: <%= number_to_currency(@hst) %></p>
+  <p><strong>Total: <%= number_to_currency(@total_with_taxes) %></strong></p>
+</div>

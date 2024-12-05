@@ -56,6 +56,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="customerDropdown">
                   <li><%= link_to "Profile", edit_customer_registration_path, class: "dropdown-item" %></li>
+                  <li><%= link_to "My Orders", orders_path, class: "dropdown-item" %></li>
                   <li><%= link_to "Logout", destroy_customer_session_path, method: :delete, class: "dropdown-item" %></li>
                 </ul>
               </li>
@@ -82,6 +83,7 @@
         </div>
       </div>
     </nav>
+
 
     <%= yield %>
 

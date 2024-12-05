@@ -1,11 +1,13 @@
 class CheckoutController < ApplicationController
+  before_action :authenticate_customer!
+
   def new
-    @customer = Customer.new
+    @customer = current_customer || Customer.new
   end
 
   def create
-    @customer = Customer.find_or_initialize_by(name: customer_params[:name])
-    if @customer.update(customer_params) # Use strong parameters
+    @customer = current_customer
+    if @customer.update(customer_params) # Update the logged-in customer's details
       # Create an order for the customer
       order = @customer.orders.create(total_amount: calculate_total_price) # Use total_amount as per schema
 
@@ -22,7 +24,7 @@ class CheckoutController < ApplicationController
       # Clear the cart after checkout
       session[:cart] = nil
 
-      # Redirect to the order summary page with success message
+      # Redirect to the order summary page with a success message
       redirect_to order_path(order), notice: "Order placed successfully!"
     else
       flash.now[:alert] = "There was an issue with your order. Please ensure all details are correct."
@@ -87,5 +89,11 @@ class CheckoutController < ApplicationController
 
     # Return total price including taxes
     subtotal + (subtotal * tax_rate)
+  end
+
+  def authenticate_customer!
+    unless customer_signed_in?
+      redirect_to new_customer_registration_path, alert: "Please sign up or log in to continue."
+    end
   end
 end

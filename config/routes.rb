@@ -27,4 +27,6 @@ Rails.application.routes.draw do
     resources :menus, only: [ :index, :new, :create, :edit, :update, :destroy ]
     resources :categories, only: [ :index, :new, :create, :edit, :update, :destroy ]
   end
+
+  resources :orders, only: [ :index, :show ]
 end

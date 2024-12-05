@@ -4,15 +4,15 @@
   <%= form_with url: checkout_path, method: :post, local: true do |form| %>
     <div class="mb-3">
       <%= form.label :name, "Name" %>
-      <%= form.text_field :name, name: "customer[name]", class: "form-control", required: true %>
+      <%= form.text_field :name, value: @customer.name, name: "customer[name]", class: "form-control", required: true %>
     </div>
     <div class="mb-3">
       <%= form.label :address, "Address" %>
-      <%= form.text_field :address, name: "customer[address]", class: "form-control", required: true %>
+      <%= form.text_field :address, value: @customer.address, name: "customer[address]", class: "form-control", required: true %>
     </div>
     <div class="mb-3">
       <%= form.label :province, "Province" %>
-      <%= form.select :province, ["Ontario", "Manitoba", "Quebec"], {}, name: "customer[province]", class: "form-control", required: true %>
+      <%= form.select :province, ["Ontario", "Manitoba", "Quebec"], { selected: @customer.province }, name: "customer[province]", class: "form-control", required: true %>
     </div>
 
     <h3>Order</h3>

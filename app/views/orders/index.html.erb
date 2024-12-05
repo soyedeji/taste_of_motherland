@@ -1,0 +1,38 @@
+<!-- app/views/orders/index.html.erb -->
+<div class="container mt-5">
+  <h1>My Past Orders</h1>
+  <% if @orders.any? %>
+    <table class="table table-striped mt-4">
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Date</th>
+          <th>Items</th>
+          <th>Total Amount</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @orders.each do |order| %>
+          <tr>
+            <td><%= order.id %></td>
+            <td><%= order.created_at.strftime("%Y-%m-%d") %></td>
+            <td>
+              <% order.order_details.each do |detail| %>
+                <p><%= detail.menu.name %> (x<%= detail.quantity %>)</p>
+              <% end %>
+            </td>
+            <td><%= number_to_currency(order.total_amount) %></td>
+            <td><%= order.status %></td>
+            <td>
+              <%= link_to "View Details", order_path(order), class: "btn btn-primary btn-sm" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>You have no past orders.</p>
+  <% end %>
+</div>

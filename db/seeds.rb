@@ -1,19 +1,8 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
-
-# db/seeds.rb
-
-
 # Clear existing data to avoid conflicts
 Menu.destroy_all
 Category.destroy_all
+Customer.destroy_all
+
 # Ensure that Devise is available for creating encrypted passwords
 require 'devise'
 
@@ -28,15 +17,11 @@ else
   puts "Admin user already exists with email: #{admin_email}"
 end
 
-
-
 require 'faker'
-
-
 
 # Create categories
 categories = %w[Appetizer Dessert Main\ Course Snacks].map do |category_name|
-  Category.create!(name: category_name)
+  Category.find_or_create_by!(name: category_name)
 end
 
 # Confirm categories were created
@@ -47,10 +32,16 @@ else
   exit
 end
 
-# Seed 100 menu items
-100.times do
+# Seed 100 unique menu items
+unique_dishes = Set.new
+
+while unique_dishes.size < 20
+  unique_dishes.add(Faker::Food.dish)
+end
+
+unique_dishes.each do |dish|
   Menu.create!(
-    name: Faker::Food.dish,
+    name: dish,
     description: Faker::Food.description,
     price: Faker::Commerce.price(range: 5.0..25.0),
     category: categories.sample, # Assign a random category from those created
@@ -59,3 +50,23 @@ end
 end
 
 puts "Seeded 100 African menu items successfully!"
+
+# Sample customer data
+customer_email = 'customer@example.com'
+customer_password = 'password123'
+
+# Create a sample customer for login
+if Customer.find_by(email: customer_email).nil?
+  Customer.create!(
+    email: customer_email,
+    password: customer_password,
+    password_confirmation: customer_password,
+    name: 'Sample Customer',
+    address: '123 Test Street',
+    province: 'Manitoba',
+    postal_code: 'R3C 0V8'
+  )
+  puts "Sample customer created with email: #{customer_email} and password: #{customer_password}"
+else
+  puts "Sample customer already exists with email: #{customer_email}"
+end
