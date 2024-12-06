@@ -1,7 +1,7 @@
 <div class="container mt-5">
   <h1>Checkout</h1>
 
-  <%= form_with url: checkout_path, method: :post, local: true do |form| %>
+ <%= form_with url: checkout_index_path, method: :post, local: true do |form| %>
     <div class="mb-3">
       <%= form.label :name, "Name" %>
       <%= form.text_field :name, value: @customer.name, name: "customer[name]", class: "form-control", required: true %>

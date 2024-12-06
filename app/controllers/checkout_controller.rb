@@ -9,23 +9,24 @@ class CheckoutController < ApplicationController
     @customer = current_customer
     if @customer.update(customer_params) # Update the logged-in customer's details
       # Create an order for the customer
-      order = @customer.orders.create(total_amount: calculate_total_price) # Use total_amount as per schema
+      @order = @customer.orders.create(total_amount: calculate_total_price)
 
       # Add order details for each item in the cart
       session[:cart].each do |menu_id, quantity|
         menu = Menu.find(menu_id)
-        order.order_details.create!(
+        @order.order_details.create!(
           menu: menu,
           quantity: quantity,
           price: menu.price
         )
       end
 
-      # Clear the cart after checkout
-      session[:cart] = nil
+      # Redirect to the Stripe payment page
+      # Redirect to the Stripe payment page
+      # redirect_to payments_path(order_id: @order.id)
+      redirect_to payments_path, method: :post, params: { order_id: @order.id }
 
-      # Redirect to the order summary page with a success message
-      redirect_to order_path(order), notice: "Order placed successfully!"
+
     else
       flash.now[:alert] = "There was an issue with your order. Please ensure all details are correct."
       render :new

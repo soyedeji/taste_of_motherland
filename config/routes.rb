@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
+  # Devise routes for Customers and Admins
   devise_for :customers
+  devise_for :admins
 
   # Cart routes
   resource :cart, only: [ :show ], controller: "cart" do
@@ -9,8 +11,8 @@ Rails.application.routes.draw do
   end
 
   # Checkout routes
-  resource :checkout, only: [ :new, :create ], controller: "checkout"
-  get "order/:id", to: "checkout#show", as: "order" # Show order summary for a specific order
+  resources :checkout, only: [ :new, :create ]
+  get "order/:id", to: "checkout#show", as: "order"
 
   # Menu routes
   resources :menus, only: [ :show ]
@@ -20,13 +22,21 @@ Rails.application.routes.draw do
   get "categories/index"
   get "categories/show"
 
-  # Admin routes
-  devise_for :admins
+  # Admin namespace
   namespace :admin do
     root to: "dashboard#index"
     resources :menus, only: [ :index, :new, :create, :edit, :update, :destroy ]
     resources :categories, only: [ :index, :new, :create, :edit, :update, :destroy ]
   end
 
+  # Order routes
   resources :orders, only: [ :index, :show ]
+
+  # Payment routes
+  resources :payments, only: [ :create ] do
+    member do
+      get :success
+      get :cancel
+    end
+  end
 end
